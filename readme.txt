@@ -6,4 +6,3 @@ Learn Git.
 Boss
 boss 2
 boss 3
-pushgf
