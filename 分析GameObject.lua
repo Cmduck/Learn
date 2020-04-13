@@ -7,12 +7,15 @@ local GameObject = {}
 --游戏中所有的组件（所有类）都应该实现它。它实现了组件的继承链。
 --@参数 target [cocos2dx node对象]
 function GameObject.extend(target)
+--定义target的组件链
     target.components_ = {}
 
+    --检测组件是否存在
     function target:checkComponent(name)
         return self.components_[name] ~= nil
     end
 
+    --添加组件
     function target:addComponent(name)
         local component = Registry.newObject(name)
         self.components_[name] = component
@@ -36,7 +39,7 @@ end
 return GameObject
 
 
-cc.GameObject = import(".GameObject")
+cc.GameObject = import(".GameObject") 
 local GameObject = cc.GameObject
 local ccmt = {}
 ccmt.__call = function(self, target)

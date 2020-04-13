@@ -7,6 +7,8 @@ function EventProxy:ctor(eventDispatcher, view)
     self.eventDispatcher_ = eventDispatcher
     self.handles_ = {}
 
+    --这里注册了view节点的退出事件,删除所有的事件监听
+    --避免了view被注销时，由事件dispatch造成的内存泄露
     if view then
         cc(view):addNodeEventListener(cc.NODE_EVENT, function(event)
             if event.name == "exit" then
@@ -17,7 +19,10 @@ function EventProxy:ctor(eventDispatcher, view)
 end
 
 function EventProxy:addEventListener(eventName, listener, data)
+	--这里的self.eventDispatcher对象,实际上是扩展了EventProtocol方法的对象.
+	--注意返回的是handle,当前绑定事件的索引
     local handle = self.eventDispatcher_:addEventListener(eventName, listener, data)
+    --将事件添加到EventProxy的事件管理器中统一管理
     self.handles_[#self.handles_ + 1] = {eventName, handle}
     return self, handle
 end
